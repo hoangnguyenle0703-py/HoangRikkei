@@ -3,7 +3,7 @@ package utils;
 import java.util.Scanner;
 
 public class InputValidator {
-    // Sử dụng chung 1 đối tượng Scanner cho toàn bộ chương trình
+
     private static final Scanner scanner = new Scanner(System.in);
 
     public static String getString(String prompt, String errorMessage) {
