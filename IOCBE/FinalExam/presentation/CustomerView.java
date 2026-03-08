@@ -8,7 +8,6 @@ import utils.InputValidator;
 import java.util.List;
 
 public class CustomerView {
-    // Gọi tầng Service để xử lý logic và thao tác với Database
     private final ICustomerService customerService = new CustomerServiceImpl();
 
     public void displayMenu() {
@@ -70,7 +69,6 @@ public class CustomerView {
         System.out.println("\n--- CẬP NHẬT THÔNG TIN KHÁCH HÀNG ---");
         int id = InputValidator.getInt("Nhập ID khách hàng cần cập nhật: ", "ID phải là số nguyên!", 1, Integer.MAX_VALUE);
 
-        // Lấy danh sách để kiểm tra xem ID có tồn tại không
         List<Customer> currentCustomers = customerService.getAllCustomers();
         Customer foundCustomer = currentCustomers.stream().filter(c -> c.getId() == id).findFirst().orElse(null);
 
@@ -121,7 +119,7 @@ public class CustomerView {
         }
     }
 
-    // Hàm phụ trợ in bảng danh sách
+    // Hàm in bảng danh sách
     private void printCustomerTable(List<Customer> customers) {
         if (customers == null || customers.isEmpty()) {
             System.out.println("=> Không tìm thấy khách hàng nào.");
