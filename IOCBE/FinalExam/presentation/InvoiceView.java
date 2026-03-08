@@ -69,7 +69,6 @@ public class InvoiceView {
     private void addInvoice() {
         System.out.println("\n--- TẠO HÓA ĐƠN MỚI ---");
 
-        // Chọn khách hàng
         int customerId = InputValidator.getInt("Nhập ID Khách hàng: ", "ID phải là số nguyên!", 1, Integer.MAX_VALUE);
         List<Customer> customers = customerService.getAllCustomers();
         boolean customerExists = customers.stream().anyMatch(c -> c.getId() == customerId);
@@ -79,7 +78,7 @@ public class InvoiceView {
             return;
         }
 
-        // Tạo giỏ hàng (Danh sách chi tiết hóa đơn)
+        // Tạo giỏ hàng 
         List<InvoiceDetails> details = new ArrayList<>();
         double totalAmount = 0;
         List<Product> availableProducts = productService.getAllProducts();
@@ -136,7 +135,6 @@ public class InvoiceView {
             newInvoice.setCustomerId(customerId);
             newInvoice.setTotalAmount(totalAmount);
 
-            // Gọi hàm Transaction từ Service
             if (invoiceService.addInvoice(newInvoice, details)) {
                 System.out.println("=> Giao dịch thành công! Hóa đơn đã được lưu, kho hàng đã được trừ.");
             } else {
@@ -186,7 +184,7 @@ public class InvoiceView {
                     searchInvoiceByDate();
                     break;
                 case 3:
-                    return; // Thoát menu con, quay lại menu hóa đơn
+                    return; 
             }
         }
     }
@@ -194,10 +192,8 @@ public class InvoiceView {
     // Hàm tìm kiếm theo ngày tháng năm
     private void searchInvoiceByDate() {
         System.out.println("\n--- TÌM KIẾM THEO NGÀY/THÁNG/NĂM ---");
-        // Yêu cầu nhập theo định dạng chuẩn để dễ truy vấn
         String dateStr = InputValidator.getString("Nhập ngày cần tìm (Định dạng YYYY-MM-DD, vd: 2024-05-20): ", "Không được để trống!");
 
-        // Gọi xuống service để tìm kiếm (Bạn cần bổ sung hàm này ở Service và DAO)
         List<Invoice> invoices = invoiceService.searchByDate(dateStr);
 
         if (invoices == null || invoices.isEmpty()) {
@@ -205,7 +201,6 @@ public class InvoiceView {
             return;
         }
 
-        // Tái sử dụng code in bảng danh sách
         System.out.println("------------------------------------------------------------------");
         System.out.printf("| %-5s | %-12s | %-20s | %-15s |\n", "ID HĐ", "ID Khách", "Ngày tạo", "Tổng tiền");
         System.out.println("------------------------------------------------------------------");
