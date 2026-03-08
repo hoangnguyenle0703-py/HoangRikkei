@@ -4,8 +4,6 @@ import utils.InputValidator;
 import business.impl.AdminServiceImpl;
 
 public class MainView {
-
-    // Hàm bắt đầu chạy chương trình
     public void start() {
         while (true) {
             System.out.println("\n========= HỆ THỐNG QUẢN LÝ CỬA HÀNG =========");
@@ -18,12 +16,12 @@ public class MainView {
             switch (choice) {
                 case 1:
                     if (showLogin()) {
-                        showMainMenu(); // Nếu đăng nhập thành công thì mở Menu Chính
+                        showMainMenu();
                     }
                     break;
                 case 2:
                     System.out.println("Cảm ơn bạn đã sử dụng chương trình. Tạm biệt!");
-                    System.exit(0); // Kết thúc chương trình
+                    System.exit(0); 
             }
         }
     }
@@ -35,7 +33,6 @@ public class MainView {
         String password = InputValidator.getString("Mật khẩu: ", "Mật khẩu không được để trống!");
 
         AdminServiceImpl adminService = new AdminServiceImpl();
-        // Tạm thời kiểm tra cứng. Bước sau chúng ta sẽ dùng AdminService.login() để kiểm tra trong CSDL
         if (adminService.login(username, password)) {
             System.out.println("=> Đăng nhập thành công!");
             return true;
@@ -45,7 +42,7 @@ public class MainView {
         }
     }
 
-    // Giao diện chính sau khi đăng nhập
+    // Giao diện chính
     private void showMainMenu() {
         while (true) {
             System.out.println("\n========= MENU CHÍNH =========");
@@ -75,7 +72,7 @@ public class MainView {
                     break;
                 case 4:
                     System.out.println("\n=> Đã đăng xuất thành công!");
-                    return; // Dùng return để thoát khỏi vòng lặp Menu Chính, quay lại Start Menu
+                    return; 
             }
         }
     }
