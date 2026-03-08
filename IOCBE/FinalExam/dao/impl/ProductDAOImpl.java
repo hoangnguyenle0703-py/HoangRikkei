@@ -17,12 +17,10 @@ public class ProductDAOImpl implements IProductDAO {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM Product ORDER BY id ASC";
 
-        // Mở kết nối và chuẩn bị câu lệnh
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            // Duyệt từng dòng dữ liệu trả về từ PostgreSQL
             while (rs.next()) {
                 Product p = new Product();
                 p.setId(rs.getInt("id"));
@@ -31,7 +29,7 @@ public class ProductDAOImpl implements IProductDAO {
                 p.setPrice(rs.getDouble("price"));
                 p.setStock(rs.getInt("stock"));
 
-                products.add(p); // Thêm vào danh sách
+                products.add(p);
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi lấy danh sách sản phẩm: " + e.getMessage());
@@ -46,13 +44,11 @@ public class ProductDAOImpl implements IProductDAO {
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            // Truyền giá trị từ object Product vào các dấu ?
             ps.setString(1, product.getName());
             ps.setString(2, product.getBrand());
             ps.setDouble(3, product.getPrice());
             ps.setInt(4, product.getStock());
 
-            // executeUpdate trả về số dòng bị ảnh hưởng, > 0 nghĩa là thêm thành công
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -72,9 +68,9 @@ public class ProductDAOImpl implements IProductDAO {
             ps.setString(2, product.getBrand());
             ps.setDouble(3, product.getPrice());
             ps.setInt(4, product.getStock());
-            ps.setInt(5, product.getId()); // Truyền ID vào điều kiện WHERE
+            ps.setInt(5, product.getId());
 
-            return ps.executeUpdate() > 0; // Trả về true nếu cập nhật thành công ít nhất 1 dòng
+            return ps.executeUpdate() > 0; 
 
         } catch (SQLException e) {
             System.err.println("Lỗi khi cập nhật sản phẩm: " + e.getMessage());
@@ -159,7 +155,7 @@ public class ProductDAOImpl implements IProductDAO {
     @Override
     public List<Product> searchByStock(int stock) {
         List<Product> products = new ArrayList<>();
-        // Sử dụng dấu = để tìm chính xác số lượng tồn kho
+
         String sql = "SELECT * FROM Product WHERE stock = ? ORDER BY id ASC";
 
         try (Connection conn = DBUtil.getConnection();
