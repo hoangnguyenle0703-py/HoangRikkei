@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ProductView {
-    // Gọi tầng Service để xử lý logic và thao tác với DB
+    
     private final IProductService productService = new ProductServiceImpl();
 
     public void displayMenu() {
@@ -50,19 +50,19 @@ public class ProductView {
                     searchByStock();
                     break;
                 case 8:
-                    return; // Kết thúc vòng lặp, tự động quay lại MainView
+                    return;
             }
         }
     }
 
-    // 1. Hiển thị danh sách
+    // Hiển thị danh sách
     private void displayAllProducts() {
         System.out.println("\n--- DANH SÁCH SẢN PHẨM ---");
         List<Product> products = productService.getAllProducts();
         printProductTable(products);
     }
 
-    // 2. Thêm sản phẩm
+    // Thêm sản phẩm
     private void addProduct() {
         System.out.println("\n--- THÊM SẢN PHẨM MỚI ---");
         String name = InputValidator.getString("Nhập tên sản phẩm: ", "Tên không được để trống!");
@@ -70,7 +70,7 @@ public class ProductView {
         double price = InputValidator.getDouble("Nhập giá tiền: ", "Giá tiền không hợp lệ!", 0);
         int stock = InputValidator.getInt("Nhập số lượng tồn kho: ", "Tồn kho không hợp lệ!", 0, Integer.MAX_VALUE);
 
-        Product newProduct = new Product(0, name, brand, price, stock); // ID tự tăng nên truyền 0
+        Product newProduct = new Product(0, name, brand, price, stock);
         if (productService.addProduct(newProduct)) {
             System.out.println("=> Thêm sản phẩm thành công!");
         } else {
@@ -78,12 +78,11 @@ public class ProductView {
         }
     }
 
-    // 3. Cập nhật sản phẩm
+    // Cập nhật sản phẩm
     private void updateProduct() {
         System.out.println("\n--- CẬP NHẬT SẢN PHẨM ---");
         int id = InputValidator.getInt("Nhập ID sản phẩm cần cập nhật: ", "ID phải là số nguyên!", 1, Integer.MAX_VALUE);
 
-        // Mẹo nhỏ: Lấy danh sách để kiểm tra xem ID có tồn tại không và hiển thị thông tin cũ
         List<Product> currentProducts = productService.getAllProducts();
         Product foundProduct = currentProducts.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
 
@@ -108,7 +107,7 @@ public class ProductView {
         }
     }
 
-    // 4. Xóa sản phẩm
+    // Xóa sản phẩm
     private void deleteProduct() {
         System.out.println("\n--- XÓA SẢN PHẨM ---");
         int id = InputValidator.getInt("Nhập ID sản phẩm cần xóa: ", "ID phải là số nguyên!", 1, Integer.MAX_VALUE);
@@ -125,7 +124,7 @@ public class ProductView {
         }
     }
 
-    // 5. Tìm kiếm theo Brand
+    // Tìm kiếm theo Brand
     private void searchByBrand() {
         System.out.println("\n--- TÌM KIẾM THEO NHÃN HÀNG ---");
         String brand = InputValidator.getString("Nhập từ khóa nhãn hàng: ", "Từ khóa không được để trống!");
@@ -133,7 +132,7 @@ public class ProductView {
         printProductTable(products);
     }
 
-    // 6. Tìm kiếm theo khoảng giá
+    // Tìm kiếm theo khoảng giá
     private void searchByPriceRange() {
         System.out.println("\n--- TÌM KIẾM THEO KHOẢNG GIÁ ---");
         double min = InputValidator.getDouble("Nhập giá tối thiểu: ", "Giá không hợp lệ!", 0);
@@ -155,7 +154,7 @@ public class ProductView {
         printProductTable(products);
     }
 
-    // Hàm phụ trợ để in bảng cho đẹp (Tái sử dụng nhiều lần)
+    // Hàm để in bảng cho đẹp
     private void printProductTable(List<Product> products) {
         if (products == null || products.isEmpty()) {
             System.out.println("=> Không tìm thấy sản phẩm nào.");
