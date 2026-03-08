@@ -17,10 +17,10 @@ public class AdminDAOImpl implements IAdminDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, username);
-            ps.setString(2, password); // Lưu ý: Thực tế nên hash password, nhưng làm đồ án cơ bản thì để text thường cũng được.
+            ps.setString(2, password);
 
             try (ResultSet rs = ps.executeQuery()) {
-                return rs.next(); // Nếu có kết quả trả về nghĩa là đăng nhập đúng
+                return rs.next(); 
             }
 
         } catch (SQLException e) {
