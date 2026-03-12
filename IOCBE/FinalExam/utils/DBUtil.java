@@ -12,9 +12,7 @@ public class DBUtil {
     public static Connection getConnection() {
         Connection conn = null;
         try {
-            // Load driver của PostgreSQL
             Class.forName("org.postgresql.Driver");
-            // Mở kết nối
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Lỗi kết nối CSDL: " + e.getMessage());
@@ -22,7 +20,6 @@ public class DBUtil {
         return conn;
     }
 
-    // Hàm test thử kết nối
     public static void main(String[] args) {
         Connection testConn = DBUtil.getConnection();
         if (testConn != null) {
