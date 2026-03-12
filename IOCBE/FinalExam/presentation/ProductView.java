@@ -55,14 +55,12 @@ public class ProductView {
         }
     }
 
-    // Hiển thị danh sách
     private void displayAllProducts() {
         System.out.println("\n--- DANH SÁCH SẢN PHẨM ---");
         List<Product> products = productService.getAllProducts();
         printProductTable(products);
     }
 
-    // Thêm sản phẩm
     private void addProduct() {
         System.out.println("\n--- THÊM SẢN PHẨM MỚI ---");
         String name = InputValidator.getString("Nhập tên sản phẩm: ", "Tên không được để trống!");
@@ -78,7 +76,6 @@ public class ProductView {
         }
     }
 
-    // Cập nhật sản phẩm
     private void updateProduct() {
         System.out.println("\n--- CẬP NHẬT SẢN PHẨM ---");
         int id = InputValidator.getInt("Nhập ID sản phẩm cần cập nhật: ", "ID phải là số nguyên!", 1, Integer.MAX_VALUE);
@@ -107,7 +104,6 @@ public class ProductView {
         }
     }
 
-    // Xóa sản phẩm
     private void deleteProduct() {
         System.out.println("\n--- XÓA SẢN PHẨM ---");
         int id = InputValidator.getInt("Nhập ID sản phẩm cần xóa: ", "ID phải là số nguyên!", 1, Integer.MAX_VALUE);
@@ -124,7 +120,6 @@ public class ProductView {
         }
     }
 
-    // Tìm kiếm theo Brand
     private void searchByBrand() {
         System.out.println("\n--- TÌM KIẾM THEO NHÃN HÀNG ---");
         String brand = InputValidator.getString("Nhập từ khóa nhãn hàng: ", "Từ khóa không được để trống!");
@@ -132,7 +127,6 @@ public class ProductView {
         printProductTable(products);
     }
 
-    // Tìm kiếm theo khoảng giá
     private void searchByPriceRange() {
         System.out.println("\n--- TÌM KIẾM THEO KHOẢNG GIÁ ---");
         double min = InputValidator.getDouble("Nhập giá tối thiểu: ", "Giá không hợp lệ!", 0);
@@ -141,7 +135,6 @@ public class ProductView {
         printProductTable(products);
     }
 
-    // 7. Tìm kiếm theo tồn kho
     private void searchByStock() {
         System.out.println("\n--- TÌM KIẾM SẢN PHẨM THEO TỒN KHO ---");
         int exactStock = InputValidator.getInt("Nhập chính xác số lượng tồn kho cần tìm: ", "Vui lòng nhập số nguyên hợp lệ!", 0, Integer.MAX_VALUE);
@@ -154,7 +147,6 @@ public class ProductView {
         printProductTable(products);
     }
 
-    // Hàm để in bảng cho đẹp
     private void printProductTable(List<Product> products) {
         if (products == null || products.isEmpty()) {
             System.out.println("=> Không tìm thấy sản phẩm nào.");
