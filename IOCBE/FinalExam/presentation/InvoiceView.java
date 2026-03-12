@@ -47,12 +47,11 @@ public class InvoiceView {
         }
     }
 
-    //  Hiển thị danh sách hóa đơn
     private void displayAllInvoices() {
         System.out.println("\n--- DANH SÁCH HÓA ĐƠN ---");
         List<Invoice> invoices = invoiceService.getAllInvoices();
         if (invoices == null || invoices.isEmpty()) {
-            System.out.println("=> Chưa có hóa đơn nào trong hệ thống.");
+            System.out.println("Chưa có hóa đơn nào trong hệ thống.");
             return;
         }
         System.out.println("------------------------------------------------------------------");
@@ -65,7 +64,6 @@ public class InvoiceView {
         System.out.println("------------------------------------------------------------------");
     }
 
-    // Thêm hóa đơn mới
     private void addInvoice() {
         System.out.println("\n--- TẠO HÓA ĐƠN MỚI ---");
 
@@ -74,11 +72,10 @@ public class InvoiceView {
         boolean customerExists = customers.stream().anyMatch(c -> c.getId() == customerId);
 
         if (!customerExists) {
-            System.err.println("=> Lỗi: Không tìm thấy khách hàng có ID = " + customerId);
+            System.err.println("Lỗi: Không tìm thấy khách hàng có ID = " + customerId);
             return;
         }
 
-        // Tạo giỏ hàng 
         List<InvoiceDetails> details = new ArrayList<>();
         double totalAmount = 0;
         List<Product> availableProducts = productService.getAllProducts();
@@ -92,12 +89,12 @@ public class InvoiceView {
             Product selectedProduct = availableProducts.stream().filter(p -> p.getId() == productId).findFirst().orElse(null);
 
             if (selectedProduct == null) {
-                System.err.println("=> Lỗi: Sản phẩm không tồn tại!");
+                System.err.println("Lỗi: Sản phẩm không tồn tại!");
                 continue;
             }
 
             if (selectedProduct.getStock() <= 0) {
-                System.err.println("=> Lỗi: Sản phẩm này đã hết hàng!");
+                System.err.println("Lỗi: Sản phẩm này đã hết hàng!");
                 continue;
             }
 
@@ -113,7 +110,7 @@ public class InvoiceView {
             details.add(detail);
             totalAmount += (selectedProduct.getPrice() * quantity);
 
-            System.out.println("=> Đã thêm vào giỏ. Tạm tính: " + totalAmount);
+            System.out.println("Đã thêm vào giỏ. Tạm tính: " + totalAmount);
 
             String continueAdd = InputValidator.getString("Tiếp tục thêm sản phẩm khác? (Y/N): ", "Vui lòng nhập Y hoặc N!");
             if (continueAdd.equalsIgnoreCase("N")) {
@@ -121,9 +118,8 @@ public class InvoiceView {
             }
         }
 
-        // Lưu hóa đơn
         if (details.isEmpty()) {
-            System.out.println("=> Hóa đơn trống, đã hủy thao tác tạo hóa đơn.");
+            System.out.println("Hóa đơn trống, đã hủy thao tác tạo hóa đơn.");
             return;
         }
 
@@ -136,23 +132,22 @@ public class InvoiceView {
             newInvoice.setTotalAmount(totalAmount);
 
             if (invoiceService.addInvoice(newInvoice, details)) {
-                System.out.println("=> Giao dịch thành công! Hóa đơn đã được lưu, kho hàng đã được trừ.");
+                System.out.println("Giao dịch thành công! Hóa đơn đã được lưu, kho hàng đã được trừ.");
             } else {
-                System.err.println("=> Giao dịch thất bại! Đã Rollback dữ liệu.");
+                System.err.println("Giao dịch thất bại! Đã Rollback dữ liệu.");
             }
         } else {
-            System.out.println("=> Đã hủy lưu hóa đơn.");
+            System.out.println("Đã hủy lưu hóa đơn.");
         }
     }
 
-    // Tìm kiếm hóa đơn theo tên khách hàng
     private void searchInvoiceByCustomer() {
         System.out.println("\n--- TÌM KIẾM HÓA ĐƠN ---");
         String customerName = InputValidator.getString("Nhập tên khách hàng cần tìm: ", "Tên không được để trống!");
 
         List<Invoice> invoices = invoiceService.searchByCustomerName(customerName);
         if (invoices == null || invoices.isEmpty()) {
-            System.out.println("=> Không tìm thấy hóa đơn nào của khách hàng này.");
+            System.out.println("Không tìm thấy hóa đơn nào của khách hàng này.");
             return;
         }
 
@@ -189,7 +184,6 @@ public class InvoiceView {
         }
     }
 
-    // Hàm tìm kiếm theo ngày tháng năm
     private void searchInvoiceByDate() {
         System.out.println("\n--- TÌM KIẾM THEO NGÀY/THÁNG/NĂM ---");
         String dateStr = InputValidator.getString("Nhập ngày cần tìm (Định dạng YYYY-MM-DD, vd: 2024-05-20): ", "Không được để trống!");
@@ -197,7 +191,7 @@ public class InvoiceView {
         List<Invoice> invoices = invoiceService.searchByDate(dateStr);
 
         if (invoices == null || invoices.isEmpty()) {
-            System.out.println("=> Không tìm thấy hóa đơn nào trong ngày: " + dateStr);
+            System.out.println("Không tìm thấy hóa đơn nào trong ngày: " + dateStr);
             return;
         }
 
