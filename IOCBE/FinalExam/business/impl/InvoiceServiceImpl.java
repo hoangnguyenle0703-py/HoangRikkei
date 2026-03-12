@@ -20,7 +20,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Override
     public List<Invoice> searchByCustomerName(String customerName) {
         if (customerName == null || customerName.trim().isEmpty()) {
-            System.err.println("Logic lỗi: Tên khách hàng tìm kiếm không hợp lệ.");
+            System.err.println("Tên khách hàng tìm kiếm không hợp lệ.");
             return null;
         }
         return invoiceDAO.searchByCustomerName(customerName);
@@ -28,20 +28,17 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public boolean addInvoice(Invoice invoice, List<InvoiceDetails> details) {
-        // Logic kiểm tra cực kỳ quan trọng: Hóa đơn phải có ít nhất 1 sản phẩm mới được lưu
         if (details == null || details.isEmpty()) {
-            System.err.println("Logic lỗi: Không thể tạo hóa đơn trống (không có sản phẩm nào).");
+            System.err.println("Không thể tạo hóa đơn trống (không có sản phẩm nào).");
             return false;
         }
-        // Gọi xuống DAO để thực hiện Transaction lưu vào database
         return invoiceDAO.addInvoice(invoice, details);
     }
 
     @Override
     public List<Invoice> searchByDate(String dateStr) {
-        // Có thể thêm logic kiểm tra định dạng ngày tháng ở đây trước khi đẩy xuống DAO nếu muốn
         if (dateStr == null || dateStr.trim().isEmpty()) {
-            System.err.println("Logic lỗi: Ngày tìm kiếm không hợp lệ.");
+            System.err.println("Ngày tìm kiếm không hợp lệ.");
             return null;
         }
 
