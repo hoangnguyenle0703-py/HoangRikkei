@@ -41,14 +41,12 @@ public class CustomerView {
         }
     }
 
-    // Hiển thị danh sách
     private void displayAllCustomers() {
         System.out.println("\n--- DANH SÁCH KHÁCH HÀNG ---");
         List<Customer> customers = customerService.getAllCustomers();
         printCustomerTable(customers);
     }
 
-    // Thêm khách hàng
     private void addCustomer() {
         System.out.println("\n--- THÊM KHÁCH HÀNG MỚI ---");
         String name = InputValidator.getString("Nhập tên khách hàng: ", "Tên không được để trống!");
@@ -56,15 +54,14 @@ public class CustomerView {
         String email = InputValidator.getString("Nhập email: ", "Vui lòng nhập email!");
         String address = InputValidator.getString("Nhập địa chỉ: ", "Vui lòng nhập địa chỉ!");
 
-        Customer newCustomer = new Customer(0, name, phone, email, address); // ID tự tăng nên truyền 0
+        Customer newCustomer = new Customer(0, name, phone, email, address);
         if (customerService.addCustomer(newCustomer)) {
-            System.out.println("=> Thêm khách hàng thành công!");
+            System.out.println("Thêm khách hàng thành công!");
         } else {
-            System.err.println("=> Thêm khách hàng thất bại! (Có thể email đã tồn tại)");
+            System.err.println("Thêm khách hàng thất bại! (Có thể email đã tồn tại)");
         }
     }
 
-    // Cập nhật thông tin khách hàng
     private void updateCustomer() {
         System.out.println("\n--- CẬP NHẬT THÔNG TIN KHÁCH HÀNG ---");
         int id = InputValidator.getInt("Nhập ID khách hàng cần cập nhật: ", "ID phải là số nguyên!", 1, Integer.MAX_VALUE);
@@ -73,7 +70,7 @@ public class CustomerView {
         Customer foundCustomer = currentCustomers.stream().filter(c -> c.getId() == id).findFirst().orElse(null);
 
         if (foundCustomer == null) {
-            System.err.println("=> Không có id phù hợp!");
+            System.err.println("Không có id phù hợp!");
             return;
         }
 
@@ -87,39 +84,36 @@ public class CustomerView {
 
         Customer updateCustomer = new Customer(id, name, phone, email, address);
         if (customerService.updateCustomer(updateCustomer)) {
-            System.out.println("=> Cập nhật thành công!");
+            System.out.println("Cập nhật thành công!");
         } else {
-            System.err.println("=> Cập nhật thất bại!");
+            System.err.println("Cập nhật thất bại!");
         }
     }
 
-    // Xóa khách hàng
     private void deleteCustomer() {
         System.out.println("\n--- XÓA KHÁCH HÀNG ---");
         int id = InputValidator.getInt("Nhập ID khách hàng muốn xóa: ", "ID phải là số nguyên!", 1, Integer.MAX_VALUE);
 
-        // Kiểm tra tồn tại trước khi yêu cầu xác nhận
         List<Customer> currentCustomers = customerService.getAllCustomers();
         boolean exists = currentCustomers.stream().anyMatch(c -> c.getId() == id);
 
         if (!exists) {
-            System.err.println("=> ID khách hàng không tồn tại!");
+            System.err.println("ID khách hàng không tồn tại!");
             return;
         }
 
         String confirm = InputValidator.getString("Bạn có chắc chắn muốn xóa khách hàng này? (Y/N): ", "Vui lòng nhập Y hoặc N!");
         if (confirm.equalsIgnoreCase("Y")) {
             if (customerService.deleteCustomer(id)) {
-                System.out.println("=> Đã xóa khách hàng thành công!");
+                System.out.println("Đã xóa khách hàng thành công!");
             } else {
-                System.err.println("=> Xóa thất bại! (Khách hàng này có thể đang có hóa đơn mua hàng)");
+                System.err.println("Xóa thất bại! (Khách hàng này có thể đang có hóa đơn mua hàng)");
             }
         } else {
-            System.out.println("=> Đã hủy thao tác xóa.");
+            System.out.println("Đã hủy thao tác xóa.");
         }
     }
 
-    // Hàm in bảng danh sách
     private void printCustomerTable(List<Customer> customers) {
         if (customers == null || customers.isEmpty()) {
             System.out.println("=> Không tìm thấy khách hàng nào.");
