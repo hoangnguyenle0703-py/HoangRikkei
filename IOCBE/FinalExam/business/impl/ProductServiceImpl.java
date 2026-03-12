@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ProductServiceImpl implements IProductService {
 
-    // Khởi tạo đối tượng DAO để giao tiếp với PostgreSQL
     private final IProductDAO productDAO = new ProductDAOImpl();
 
     @Override
@@ -20,7 +19,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public boolean addProduct(Product product) {
         if (product.getPrice() <= 0) {
-            System.err.println("Logic lỗi: Giá sản phẩm phải lớn hơn 0.");
+            System.err.println("Giá sản phẩm phải lớn hơn 0.");
             return false;
         }
         return productDAO.addProduct(product);
@@ -28,20 +27,18 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public boolean updateProduct(Product product) {
-        // Hàm update trả về false nếu không tìm thấy ID để cập nhật
         return productDAO.updateProduct(product);
     }
 
     @Override
     public boolean deleteProduct(int id) {
-        // false nếu ID không tồn tại
         return productDAO.deleteProduct(id);
     }
 
     @Override
     public List<Product> searchByBrand(String brand) {
         if (brand == null || brand.trim().isEmpty()) {
-            System.err.println("Logic lỗi: Từ khóa tìm kiếm không hợp lệ.");
+            System.err.println("Từ khóa tìm kiếm không hợp lệ.");
             return null;
         }
         return productDAO.searchByBrand(brand);
@@ -50,18 +47,18 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<Product> searchByPriceRange(double minPrice, double maxPrice) {
         if (minPrice > maxPrice) {
-            System.err.println("Logic lỗi: Giá tối thiểu không được lớn hơn giá tối đa.");
+            System.err.println("Giá tối thiểu không được lớn hơn giá tối đa.");
             return null;
         }
         return productDAO.searchByPriceRange(minPrice, maxPrice);
     }
 
     @Override
-    public List<Product> searchByStock(int exactStock) {
-        if (exactStock < 0) {
-            System.err.println("Logic lỗi: Số lượng tồn kho không được âm.");
+    public List<Product> searchByStock(int stock) {
+        if (stock < 0) {
+            System.err.println("Số lượng tồn kho không được âm.");
             return null;
         }
-        return productDAO.searchByStock(exactStock);
+        return productDAO.searchByStock(stock);
     }
 }
