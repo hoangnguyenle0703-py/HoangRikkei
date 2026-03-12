@@ -18,9 +18,8 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public boolean addCustomer(Customer customer) {
-        // Logic kiểm tra: Không cho phép thêm khách hàng nếu tên trống
         if (customer.getName() == null || customer.getName().trim().isEmpty()) {
-            System.err.println("Logic lỗi: Tên khách hàng không được để trống.");
+            System.err.println("Tên khách hàng không được để trống.");
             return false;
         }
         return customerDAO.addCustomer(customer);
