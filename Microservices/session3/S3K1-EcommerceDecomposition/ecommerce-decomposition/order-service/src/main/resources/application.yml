@@ -1,0 +1,19 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order_db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# Địa chỉ Customer Service để gọi qua API (không phụ thuộc code, chỉ phụ thuộc URL)
+customer-service:
+  url: http://localhost:8081
