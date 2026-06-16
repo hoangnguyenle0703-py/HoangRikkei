@@ -1,0 +1,28 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: user-service
+
+  # ===================================================================
+  #  KẾT NỐI RIÊNG tới user_db. URL, connection pool, credentials đều
+  #  độc lập với inventory-service. Hai service KHÔNG dùng chung kết nối.
+  # ===================================================================
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user_db
+    username: user_service_app
+    password: user_pass
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: user-service-pool   # tên pool riêng để dễ nhận diện
+      maximum-pool-size: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: update      # tự tạo bảng users trong user_db
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
