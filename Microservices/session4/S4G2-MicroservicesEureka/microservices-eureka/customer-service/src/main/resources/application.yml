@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: customer-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customer_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server.error:
+  include-stacktrace: never
+  include-message: never
+
+# ===================================================================
+#  Đăng ký service này vào Eureka Server (Service Registry)
+# ===================================================================
+eureka:
+  client:
+    service-url:
+      # Địa chỉ Eureka Server để đăng ký và gửi heartbeat
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    # Hiển thị IP thay vì hostname trên Dashboard (tùy chọn nhưng nên có)
+    prefer-ip-address: true

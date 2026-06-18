@@ -1,0 +1,39 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server.error:
+  include-stacktrace: never
+  include-message: never
+
+# Địa chỉ Product Service để lấy giá (gọi qua API, không truy cập product_db)
+product-service:
+  url: http://localhost:8082
+
+# ===================================================================
+#  Đăng ký service này vào Eureka Server (Service Registry)
+# ===================================================================
+eureka:
+  client:
+    service-url:
+      # Địa chỉ Eureka Server để đăng ký và gửi heartbeat
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    # Hiển thị IP thay vì hostname trên Dashboard (tùy chọn nhưng nên có)
+    prefer-ip-address: true

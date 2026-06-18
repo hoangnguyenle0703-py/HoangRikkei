@@ -1,0 +1,44 @@
+// =====================================================================
+//  build.gradle — bản dùng cho ai build bằng Gradle thay vì Maven.
+//  (Dự án này mặc định dùng Maven qua pom.xml; file này chỉ để tham khảo.)
+// =====================================================================
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.2'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.ecommerce'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    // Spring Cloud 2023.0.x tương thích Spring Boot 3.3.x
+    set('springCloudVersion', "2023.0.3")
+}
+
+dependencies {
+    // Source: https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-server
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

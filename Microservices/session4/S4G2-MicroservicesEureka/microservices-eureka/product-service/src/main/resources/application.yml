@@ -1,0 +1,36 @@
+server:
+  # Cho phép đổi port linh hoạt qua biến môi trường PORT, mặc định 8082
+  port: ${PORT:8082}
+
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server.error:
+  include-stacktrace: never
+  include-message: never
+
+# ===================================================================
+#  Đăng ký service này vào Eureka Server (Service Registry)
+# ===================================================================
+eureka:
+  client:
+    service-url:
+      # Địa chỉ Eureka Server để đăng ký và gửi heartbeat
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    # Hiển thị IP thay vì hostname trên Dashboard (tùy chọn nhưng nên có)
+    prefer-ip-address: true

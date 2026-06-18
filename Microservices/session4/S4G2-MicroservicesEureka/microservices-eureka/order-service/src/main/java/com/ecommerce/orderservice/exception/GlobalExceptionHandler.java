@@ -1,0 +1,80 @@
+package com.ecommerce.orderservice.exception;
+
+import com.ecommerce.orderservice.dto.ApiResponseError;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+
+/**
+ * Xử lý ngoại lệ tập trung bằng @RestControllerAdvice.
+ */
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    private ApiResponseError build(HttpStatus status, String message, HttpServletRequest req) {
+        return ApiResponseError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .message(message)
+                .path(req != null ? req.getRequestURI() : null)
+                .build();
+    }
+
+    /** 503 — không tìm thấy instance service trên Eureka (hoặc service bị tắt) */
+    @ExceptionHandler(ServiceUnavailableException.class)
+    public ResponseEntity<ApiResponseError> handleServiceUnavailable(
+            ServiceUnavailableException ex, HttpServletRequest req) {
+        return new ResponseEntity<>(build(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage(), req),
+                HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    /** 400 — quantity <= 0 hoặc lỗi nghiệp vụ đầu vào */
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<ApiResponseError> handleInvalidInput(
+            InvalidInputException ex, HttpServletRequest req) {
+        return new ResponseEntity<>(build(HttpStatus.BAD_REQUEST, ex.getMessage(), req),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    /** 400 — Bean Validation thất bại */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponseError> handleValidation(
+            MethodArgumentNotValidException ex, HttpServletRequest req) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining("; "));
+        return new ResponseEntity<>(build(HttpStatus.BAD_REQUEST, message, req),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    /** 404 — không tìm thấy đơn hàng */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponseError> handleNotFound(
+            ResourceNotFoundException ex, HttpServletRequest req) {
+        return new ResponseEntity<>(build(HttpStatus.NOT_FOUND, ex.getMessage(), req),
+                HttpStatus.NOT_FOUND);
+    }
+
+    /** 500 — lưu DB thất bại */
+    @ExceptionHandler(OrderPersistenceException.class)
+    public ResponseEntity<ApiResponseError> handlePersistence(
+            OrderPersistenceException ex, HttpServletRequest req) {
+        return new ResponseEntity<>(build(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), req),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /** 500 — lỗi không lường trước khác */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponseError> handleGeneric(Exception ex, HttpServletRequest req) {
+        return new ResponseEntity<>(build(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Lỗi hệ thống: " + ex.getMessage(), req), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
